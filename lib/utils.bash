@@ -73,6 +73,8 @@ install_version() {
   )
 }
 
+#https://www.webdevqa.jp.net/ja/zip/unzipでのtarの「stripcomponents-1」に相当しますか？/959266403/
+#https://superuser.com/questions/518347/equivalent-to-tars-strip-components-1-in-unzip
 unzip-strip() (
   local Zip=$1
   local dest=${2:-.}
