@@ -42,7 +42,7 @@ download_release() {
   filename="$2"
 
   # TODO: Adapt the release URL convention for mask
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/mask-v${version}-x86_64-unknown-linux-gnu.zip"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -72,3 +72,15 @@ install_version() {
     fail "An error ocurred while installing $TOOL_NAME $version."
   )
 }
+
+unzip-strip() (
+  local Zip=$1
+  local dest=${2:-.}
+  local temp=$(mktemp -d) && unzip -d "$temp" "$Zip" && mkdir -p "$dest" &&
+    shopt -s dotglob && local f=("$temp"/*) &&
+    if ((${#f[@]} == 1)) && [[ -d "${f[0]}" ]]; then
+      mv "$temp"/*/* "$dest"
+    else
+      mv "$temp"/* "$dest"
+    fi && rmdir "$temp"/* "$temp"
+)
