@@ -38,11 +38,12 @@ list_all_versions() {
 
 download_release() {
   local version filename url
+  [ "$(uname)" = Darwin ] && os_arch=apple-darwin || os_arch=unknown-linux-gnu
   version="$1"
   filename="$2"
 
   # TODO: Adapt the release URL convention for mask
-  url="$GH_REPO/releases/download/v${version}/mask-v${version}-x86_64-unknown-linux-gnu.zip"
+  url="$GH_REPO/releases/download/v${version}/mask-v${version}-x86_64-${os_arch}.zip"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
